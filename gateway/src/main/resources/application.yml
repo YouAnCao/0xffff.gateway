@@ -1,0 +1,5 @@
+spring:
+  pid:
+    file: pid
+  application:
+    name: gateway
