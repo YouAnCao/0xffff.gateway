@@ -20,6 +20,6 @@ public class ServerProtocolDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         int size = byteBuf.readableBytes();
-
+        /* 检查协议是否满足条件，连接数据包的协议必须大于 */
     }
 }

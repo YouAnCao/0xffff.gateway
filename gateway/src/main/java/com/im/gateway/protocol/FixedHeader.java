@@ -49,8 +49,26 @@ public class FixedHeader {
      * create by Lyon.Cao in 2021/1/19 23:00:35
      */
     class ConnectFlag {
-        private int compression; // 压缩方式
+        private int compression; // 是否压缩数据
         private int flow;        // 数据流向
+
+        public int getCompression() {
+            return compression;
+        }
+
+        public void setCompression(int compression) {
+            this.compression = compression;
+        }
+
+        public int getFlow() {
+
+
+            return flow;
+        }
+
+        public void setFlow(int flow) {
+            this.flow = flow;
+        }
     }
 
 
