@@ -66,7 +66,7 @@ public class ServerBootstrap implements ApplicationRunner {
                             pipeline.addLast("serverProtocolDecoder", new ServerProtocolDecoder());
                             pipeline.addLast("serverProtocolEncoder", new ServerProtocolEncoder());
 
-                            pipeline.addLast("serverHandler", new ServerHandler());
+
                         }
                     });
             ChannelFuture channelFuture = server.bind(2020).sync();

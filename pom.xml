@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.im</groupId>
+    <groupId>com.server</groupId>
     <artifactId>im-server</artifactId>
     <version>0.0.1</version>
     <packaging>pom</packaging>
