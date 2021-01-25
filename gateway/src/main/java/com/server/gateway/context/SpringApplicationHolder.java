@@ -1,4 +1,4 @@
-package com.im.gateway.context;
+package com.server.gateway.context;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

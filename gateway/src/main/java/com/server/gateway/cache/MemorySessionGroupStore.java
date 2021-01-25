@@ -1,4 +1,4 @@
-package com.im.gateway.cache;
+package com.server.gateway.cache;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

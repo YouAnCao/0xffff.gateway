@@ -1,6 +1,5 @@
-package com.im.gateway.netty.codec;
+package com.server.gateway.netty.codec;
 
-import com.im.gateway.protocol.BiuProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;

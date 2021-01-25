@@ -1,4 +1,4 @@
-package com.im.gateway.cache;
+package com.server.gateway.cache;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;

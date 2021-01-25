@@ -1,4 +1,4 @@
-package com.im.gateway.protocol;
+package com.server.gateway.protocol;
 
 /**
  * 连接协议

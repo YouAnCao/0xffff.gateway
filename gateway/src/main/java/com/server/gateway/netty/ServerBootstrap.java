@@ -1,10 +1,10 @@
-package com.im.gateway.netty;
+package com.server.gateway.netty;
 
-import com.im.gateway.netty.codec.ServerFrameDecoder;
-import com.im.gateway.netty.codec.ServerFrameEncoder;
-import com.im.gateway.netty.codec.ServerProtocolDecoder;
-import com.im.gateway.netty.codec.ServerProtocolEncoder;
-import com.im.gateway.netty.handler.ServerHandler;
+import com.server.gateway.netty.codec.ServerFrameDecoder;
+import com.server.gateway.netty.codec.ServerFrameEncoder;
+import com.server.gateway.netty.codec.ServerProtocolDecoder;
+import com.server.gateway.netty.codec.ServerProtocolEncoder;
+import com.server.gateway.netty.handler.ServerHandler;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;

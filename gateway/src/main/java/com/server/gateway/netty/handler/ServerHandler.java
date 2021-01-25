@@ -1,6 +1,6 @@
-package com.im.gateway.netty.handler;
+package com.server.gateway.netty.handler;
 
-import com.im.gateway.protocol.BiuProtocol;
+import com.server.gateway.protocol.BiuProtocol;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
