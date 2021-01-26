@@ -24,25 +24,37 @@ public class WireProtocol {
     /* 解析协议为字节数组 */
     private byte[] toByteArray() {
         ConnectFlag connectFlag = null;
+        /* 如果固定头不存在,需要初始化固定头 */
         if (fixedHeader == null) {
-            connectFlag = new ConnectFlag();
-            fixedHeader = new WireFixedHeader(connectFlag);
+            fixedHeader = new WireFixedHeader(null);
         }
+        if ((connectFlag = fixedHeader.getConnectFlag()) == null) {
+            connectFlag = new ConnectFlag();
+            fixedHeader.setConnectFlag(connectFlag);
+        }
+
         ByteBuffer byteBuffer = ByteBuffer.allocate(7);
         int        index      = 0;
         if (variableHeader != null) {
+            /* 检查是否有命令标记，有则添加命令到协议头上，否则重置标记 */
             Integer command = variableHeader.getCommand();
             if (command != null) {
                 byte data = command.byteValue();
                 connectFlag.setCommand(true);
                 byteBuffer.put(++index, data);
+            } else {
+                connectFlag.setStatus(false);
             }
+            /* 检查是否有状态标记，有则添加状态到协议头上，否则重置标记 */
             Integer status = variableHeader.getStatus();
             if (status != null) {
                 byte data = status.byteValue();
                 connectFlag.setStatus(true);
                 byteBuffer.put(++index, data);
+            } else {
+                connectFlag.setStatus(false);
             }
+
             Integer sequence = variableHeader.getSequence();
             if (sequence != null) {
                 int data = sequence.intValue();
