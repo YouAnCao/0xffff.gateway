@@ -5,13 +5,13 @@ package com.server.ext.protocol;
  * create by Lyon.Cao in 2021/01/26 0:31
  **/
 public class ConnectFlag {
-    private int     reserved    = 0;     // 保留位
-    private boolean compression = false; // 压缩 - 是否启用压缩
-    private boolean command     = true;  // 命令 - 可变头中是否有命令字段
-    private boolean payload     = true;  // 负载 - 是否有负载
-    private boolean sequence    = false; // 序列 - 可变头中是否有序列
-    private boolean status      = false; // 状态 - 可变头中是否有状态值
-    private int     flow        = 0;     // 流向 - 当前包的流向 Flow
+    private int     reserved;           // 保留位
+    private boolean compression;        // 压缩 - 是否启用压缩
+    private boolean command;            // 命令 - 可变头中是否有命令字段
+    private boolean payload;            // 负载 - 是否有负载
+    private boolean sequence;           // 序列 - 可变头中是否有序列
+    private boolean status;             // 状态 - 可变头中是否有状态值
+    private int     flow;               // 流向 - 当前包的流向 Flow
 
     public ConnectFlag() {
     }

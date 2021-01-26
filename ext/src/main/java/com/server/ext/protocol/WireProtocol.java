@@ -21,7 +21,7 @@ public class WireProtocol {
         this.toBuild(data);
     }
 
-    /* 解析协议为字节数组 */
+    /* 将协议对象解析协议为字节数组 */
     private byte[] toByteArray() {
         ConnectFlag connectFlag = null;
         /* 如果固定头不存在,需要初始化固定头 */
@@ -35,6 +35,7 @@ public class WireProtocol {
 
         ByteBuffer byteBuffer = ByteBuffer.allocate(7);
         int        index      = 0;
+        /* 配置可变头 */
         if (variableHeader != null) {
             /* 检查是否有命令标记，有则添加命令到协议头上，否则重置标记 */
             Integer command = variableHeader.getCommand();
@@ -54,22 +55,24 @@ public class WireProtocol {
             } else {
                 connectFlag.setStatus(false);
             }
-
+            /* 检查序列号字段，如果字段有值则添加值到协议头上，并且设置标记位为true */
             Integer sequence = variableHeader.getSequence();
             if (sequence != null) {
                 int data = sequence.intValue();
                 connectFlag.setSequence(true);
                 byteBuffer.putInt(++index, data);
+            } else {
+                connectFlag.setSequence(false);
             }
         }
         /* 如果有负载,修改连接标识中的负载位为true */
-        if (payload != null && payload.length > 0) {
-            connectFlag.setPayload(true);
-        }
+        connectFlag.setPayload((payload != null && payload.length > 0));
+
         /* 获取连接标记的字节对象, 并设置到头字节数据的最前面（连接标记总是在第零位） */
         byte flag = connectFlag.parse2Byte();
         byteBuffer.put(0, flag);
         byteBuffer.flip();
+
         /* 获取固定头与可变头数据 */
         byte[] header = byteBuffer.array();
         /* 如果有负载，则构造协议头加负载的buffer，否则可以直接返回 */
