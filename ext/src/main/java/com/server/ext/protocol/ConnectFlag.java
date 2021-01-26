@@ -8,7 +8,7 @@ public class ConnectFlag {
     private int     reserved    = 0;     // 保留位
     private boolean compression = false; // 压缩
     private boolean command     = true;  // 命令
-    private boolean payload     = false; // 负载
+    private boolean payload     = true;  // 负载
     private boolean sequence    = false; // 序列
     private boolean status      = false; // 状态
     private int     flow        = 0;     // 流向
