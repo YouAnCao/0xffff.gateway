@@ -16,8 +16,7 @@ public class ConnectFlag {
     public ConnectFlag() {
     }
 
-    public ConnectFlag(int reserved, boolean compression, boolean command, boolean payload, boolean sequence, boolean status, int flow) {
-        this.reserved = reserved;
+    public ConnectFlag(boolean compression, boolean command, boolean payload, boolean sequence, boolean status, int flow) {
         this.compression = compression;
         this.command = command;
         this.payload = payload;

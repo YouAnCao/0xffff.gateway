@@ -17,7 +17,7 @@ public class WireProtocol {
         this.payload = payload;
     }
 
-    public WireProtocol(Byte[] data) {
+    public WireProtocol(byte[] data) {
         this.toBuild(data);
     }
 
@@ -61,6 +61,7 @@ public class WireProtocol {
                 int data = sequence.intValue();
                 connectFlag.setSequence(true);
                 byteBuffer.putInt(++index, data);
+                index += 3;
             } else {
                 connectFlag.setSequence(false);
             }
@@ -71,10 +72,9 @@ public class WireProtocol {
         /* 获取连接标记的字节对象, 并设置到头字节数据的最前面（连接标记总是在第零位） */
         byte flag = connectFlag.parse2Byte();
         byteBuffer.put(0, flag);
-        byteBuffer.flip();
-
         /* 获取固定头与可变头数据 */
-        byte[] header = byteBuffer.array();
+        byte[] header = new byte[index + 1];
+        byteBuffer.get(header, 0, index + 1);
         /* 如果有负载，则构造协议头加负载的buffer，否则可以直接返回 */
         if (connectFlag.isPayload()) {
             ByteBuffer result = ByteBuffer.allocate(header.length + payload.length);
@@ -87,10 +87,10 @@ public class WireProtocol {
         }
     }
 
-    private void toBuild(Byte[] data) {
+    private void toBuild(byte[] data) {
         if (data != null && data.length > 0) {
             int         index       = 0;
-            ConnectFlag connectFlag = ConnectFlag.toBuild(data[++index]);
+            ConnectFlag connectFlag = ConnectFlag.toBuild(data[index]);
             fixedHeader = new WireFixedHeader(connectFlag);
             variableHeader = new WireVariableHeader();
 
@@ -104,18 +104,21 @@ public class WireProtocol {
             }
             /* 初始化序列号,大端 */
             if (connectFlag.isSequence()) {
-                int sequence = data[++index] << 24
-                        & data[++index] << 16
-                        & data[++index] << 8
-                        & data[++index];
+                int sequence = (data[++index] & 0xff) << 24
+                        | (data[++index] & 0xff) << 16
+                        | (data[++index] & 0xff) << 8
+                        | data[++index] & 0xff;
                 variableHeader.setSequence(sequence);
             }
 
             /* 设置payload */
             if (connectFlag.isPayload()) {
-                if (data.length > index + 1) {
-                    byte[] payload = new byte[data.length - index];
-                    System.arraycopy(data, index, payload, 0, data.length - index);
+                /* 协议头长度 */
+                int headLen    = index + 1;
+                int payloadLen = data.length - headLen;
+                if (data.length > headLen) {
+                    byte[] payload = new byte[data.length - headLen];
+                    System.arraycopy(data, headLen, payload, 0, payloadLen);
                     this.payload = payload;
                 }
             }
@@ -144,5 +147,17 @@ public class WireProtocol {
 
     public void setPayload(byte[] payload) {
         this.payload = payload;
+    }
+
+    public static void main(String[] args) {
+        ConnectFlag        connectFlag    = new ConnectFlag(false, true, true, false, true, 1);
+        WireFixedHeader    fixedHeader    = new WireFixedHeader(connectFlag);
+        WireVariableHeader variableHeader = new WireVariableHeader();
+        variableHeader.setCommand(12);
+        variableHeader.setStatus(0);
+        variableHeader.setSequence(6553);
+        WireProtocol protocol    = new WireProtocol(fixedHeader, variableHeader, new byte[]{0, 1, 2, 3});
+        byte[]       bytes       = protocol.toByteArray();
+        WireProtocol newProtocol = new WireProtocol(bytes);
     }
 }
