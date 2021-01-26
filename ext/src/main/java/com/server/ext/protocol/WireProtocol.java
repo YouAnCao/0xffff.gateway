@@ -1,5 +1,9 @@
 package com.server.ext.protocol;
 
+import com.server.ext.exception.ProtocolBuildException;
+
+import java.nio.ByteBuffer;
+
 /**
  * Wire协议
  * create by Lyon.Cao in 2021/01/26 0:05
@@ -17,6 +21,19 @@ public class WireProtocol {
 
     public WireProtocol(Byte[] data) {
         this.toBuild(data);
+    }
+
+    private byte[] toByteArray() {
+        if (fixedHeader == null) {
+            throw new ProtocolBuildException("the fixed header can not be null.");
+        }
+        byte connectFlag = (byte) fixedHeader.getConnectFlag().toNumber();
+        if (variableHeader != null) {
+            if (variableHeader.getCommand() != null) {
+                
+            }
+        }
+        return null;
     }
 
     private void toBuild(Byte[] data) {
