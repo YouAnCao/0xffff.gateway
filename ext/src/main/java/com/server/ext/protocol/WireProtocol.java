@@ -1,7 +1,5 @@
 package com.server.ext.protocol;
 
-import com.server.ext.exception.ProtocolBuildException;
-
 import java.nio.ByteBuffer;
 
 /**
@@ -23,17 +21,55 @@ public class WireProtocol {
         this.toBuild(data);
     }
 
+    /* 解析协议为字节数组 */
     private byte[] toByteArray() {
+        ConnectFlag connectFlag = null;
         if (fixedHeader == null) {
-            throw new ProtocolBuildException("the fixed header can not be null.");
+            connectFlag = new ConnectFlag();
+            fixedHeader = new WireFixedHeader(connectFlag);
         }
-        byte connectFlag = (byte) fixedHeader.getConnectFlag().toNumber();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(7);
+        int        index      = 0;
         if (variableHeader != null) {
-            if (variableHeader.getCommand() != null) {
-                
+            Integer command = variableHeader.getCommand();
+            if (command != null) {
+                byte data = command.byteValue();
+                connectFlag.setCommand(true);
+                byteBuffer.put(++index, data);
+            }
+            Integer status = variableHeader.getStatus();
+            if (status != null) {
+                byte data = status.byteValue();
+                connectFlag.setStatus(true);
+                byteBuffer.put(++index, data);
+            }
+            Integer sequence = variableHeader.getSequence();
+            if (sequence != null) {
+                int data = sequence.intValue();
+                connectFlag.setSequence(true);
+                byteBuffer.putInt(++index, data);
             }
         }
-        return null;
+        /* 如果有负载,修改连接标识中的负载位为true */
+        if (payload != null && payload.length > 0) {
+            connectFlag.setPayload(true);
+        }
+        /* 获取连接标记的字节对象, 并设置到头字节数据的最前面（连接标记总是在第零位） */
+        byte flag = connectFlag.parse2Byte();
+        byteBuffer.put(0, flag);
+        byteBuffer.flip();
+        /* 获取固定头与可变头数据 */
+        byte[] header = byteBuffer.array();
+        /* 如果有负载，则构造协议头加负载的buffer，否则可以直接返回 */
+        if (connectFlag.isPayload()) {
+            ByteBuffer result = ByteBuffer.allocate(header.length + payload.length);
+            result.put(header);
+            result.put(payload);
+            result.flip();
+            return result.array();
+        } else {
+            return header;
+        }
     }
 
     private void toBuild(Byte[] data) {
@@ -43,9 +79,6 @@ public class WireProtocol {
             fixedHeader = new WireFixedHeader(connectFlag);
             variableHeader = new WireVariableHeader();
 
-            if (connectFlag.isCompression()) {
-                ++index;
-            }
             /* 初始化命令标识 */
             if (connectFlag.isCommand()) {
                 variableHeader.setCommand((int) data[++index]);

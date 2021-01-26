@@ -1,22 +1,32 @@
 package com.server.ext.protocol;
 
 /**
- * TODO
+ * 连接标识位
  * create by Lyon.Cao in 2021/01/26 0:31
  **/
 public class ConnectFlag {
     private int     reserved    = 0;     // 保留位
-    private boolean compression = false; // 压缩
-    private boolean command     = true;  // 命令
-    private boolean payload     = true;  // 负载
-    private boolean sequence    = false; // 序列
-    private boolean status      = false; // 状态
-    private int     flow        = 0;     // 流向
+    private boolean compression = false; // 压缩 - 是否启用压缩
+    private boolean command     = true;  // 命令 - 可变头中是否有命令字段
+    private boolean payload     = true;  // 负载 - 是否有负载
+    private boolean sequence    = false; // 序列 - 可变头中是否有序列
+    private boolean status      = false; // 状态 - 可变头中是否有状态值
+    private int     flow        = 0;     // 流向 - 当前包的流向 Flow
 
     public ConnectFlag() {
     }
 
-    public ConnectFlag(int compression, int command, int payload, int sequence, int status, int flow) {
+    public ConnectFlag(int reserved, boolean compression, boolean command, boolean payload, boolean sequence, boolean status, int flow) {
+        this.reserved = reserved;
+        this.compression = compression;
+        this.command = command;
+        this.payload = payload;
+        this.sequence = sequence;
+        this.status = status;
+        this.flow = flow;
+    }
+
+    private ConnectFlag(int compression, int command, int payload, int sequence, int status, int flow) {
         this.compression = compression == 1;
         this.command = command == 1;
         this.payload = payload == 1;
@@ -36,12 +46,15 @@ public class ConnectFlag {
         return new ConnectFlag(compression, command, payload, sequence, status, flow);
     }
 
-    public int toNumber() {
-        return reserved | ((compression ? 1 : 0) << 6)
+    /**
+     * 解析连接标识字段为byte数据
+     */
+    public byte parse2Byte() {
+        return (byte) (reserved | ((compression ? 1 : 0) << 6)
                 | ((command ? 1 : 0) << 5)
                 | ((payload ? 1 : 0) << 4)
                 | ((sequence ? 1 : 0) << 3)
-                | ((status ? 1 : 0) << 2) | flow;
+                | ((status ? 1 : 0) << 2) | flow);
     }
 
     public int getReserved() {
