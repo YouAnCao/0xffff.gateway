@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>com.server</groupId>
-            <artifactId>ext</artifactId>
+            <artifactId>wire-protocol</artifactId>
             <version>0.0.1</version>
         </dependency>
 

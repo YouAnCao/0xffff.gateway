@@ -17,7 +17,7 @@
 
     <modules>
         <module>gateway</module>
-        <module>ext</module>
+        <module>wire-protocol</module>
     </modules>
 
     <properties>
