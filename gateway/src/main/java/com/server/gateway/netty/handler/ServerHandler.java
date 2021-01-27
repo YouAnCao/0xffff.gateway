@@ -6,7 +6,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
- *
  * create by Lyon.Cao in 2021/01/19 1:20
  **/
 public class ServerHandler extends SimpleChannelInboundHandler<WireProtocol> {
@@ -16,4 +15,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<WireProtocol> {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, WireProtocol wireProtocol) throws Exception {
 
     }
+
+
 }

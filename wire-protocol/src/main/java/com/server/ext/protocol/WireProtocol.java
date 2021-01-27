@@ -22,7 +22,7 @@ public class WireProtocol {
     }
 
     /* 将协议对象解析协议为字节数组 */
-    private byte[] toByteArray() {
+    public byte[] toByteArray() {
         ConnectFlag connectFlag = null;
         /* 如果固定头不存在,需要初始化固定头 */
         if (fixedHeader == null) {

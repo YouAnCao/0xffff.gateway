@@ -3,7 +3,6 @@ package com.server.gateway.netty.codec;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 /**
- * TODO
  * create by Lyon.Cao in 2021/01/19 1:09
  **/
 public class ServerFrameDecoder extends LengthFieldBasedFrameDecoder {
