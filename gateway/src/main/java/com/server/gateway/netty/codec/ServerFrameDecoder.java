@@ -7,7 +7,10 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
  **/
 public class ServerFrameDecoder extends LengthFieldBasedFrameDecoder {
 
+    /* 最大支持数据包长度 1M */
+    private static final int MAX_DATA_LEN = 1048576;
+
     public ServerFrameDecoder() {
-        super(Integer.MAX_VALUE, 0, 4, 0, 4);
+        super(MAX_DATA_LEN, 0, 4, 0, 4);
     }
 }
