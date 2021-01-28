@@ -51,16 +51,27 @@
 > | 2    | 服务器主动推送客户端                       |
 > | 3    | 客户端响应服务器（适用某些需要响应的场景） |
 
-### Example
+### 样例
+
+* _常规场景下，不需要做到精确在每一个byte上，但是需要准确协议，不需要带不必要的数据进行传输；_
 
 1. 客户端提交带有命令的数据包，不需要服务器对本次数据做出回应
 
    > 控制报文
    >
-   > ![image-20210128002830687](C:\Users\lyon4\AppData\Roaming\Typora\typora-user-images\image-20210128002830687.png)
+   > ![image-20210128002830687.png](https://i.loli.net/2021/01/28/PEyCW5x1NVvTwS2.png)
    >
-   > 协议头
+   > 协议体
    >
-   > 
+   > ![image-20210128214206732.png](https://i.loli.net/2021/01/28/WYbgs9m4EAIrfzn.png)
 
-2. 
+2. 带有响应的数据（服务器对客户端做出响应）
+
+   > 控制报文
+   >
+   > ![image-20210128214409861.png](https://i.loli.net/2021/01/28/a4HfQtpDkmwqlr9.png)
+   >
+   > 协议体
+   >
+   > ![image-20210128214634519.png](https://i.loli.net/2021/01/28/4heWR52zpPBrXnb.png)
+
