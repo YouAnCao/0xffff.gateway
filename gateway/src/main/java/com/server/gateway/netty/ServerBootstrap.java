@@ -4,7 +4,7 @@ import com.server.gateway.netty.codec.ServerFrameDecoder;
 import com.server.gateway.netty.codec.ServerFrameEncoder;
 import com.server.gateway.netty.codec.ServerProtocolDecoder;
 import com.server.gateway.netty.codec.ServerProtocolEncoder;
-import com.server.gateway.netty.handler.ServerHandler;
+import com.server.gateway.netty.handler.IdleHandler;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -64,7 +64,7 @@ public class ServerBootstrap implements ApplicationRunner {
                             ChannelPipeline pipeline = socketChannel.pipeline();
 
                             pipeline.addLast("serverLogger", new LoggingHandler(LogLevel.INFO));
-
+                            pipeline.addLast("idleHandler", new IdleHandler());
                             pipeline.addLast("serverFrameDecoder", new ServerFrameDecoder());
                             pipeline.addLast("serverFrameEncoder", new ServerFrameEncoder());
                             pipeline.addLast("serverProtocolDecoder", new ServerProtocolDecoder());
