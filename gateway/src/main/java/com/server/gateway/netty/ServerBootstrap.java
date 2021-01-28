@@ -55,14 +55,13 @@ public class ServerBootstrap implements ApplicationRunner {
 
                         @Override
                         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                            logger.info("read");
+                            logger.info("channel read");
                             super.channelRead(ctx, msg);
                         }
 
                         @Override
                         protected void initChannel(NioSocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
-
                             pipeline.addLast("serverLogger", new LoggingHandler(LogLevel.INFO));
                             pipeline.addLast("idleHandler", new IdleHandler());
                             pipeline.addLast("serverFrameDecoder", new ServerFrameDecoder());
