@@ -3,3 +3,7 @@ spring:
     file: pid
   application:
     name: gateway
+
+
+gateway:
+  port: 2025

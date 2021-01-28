@@ -13,6 +13,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -25,7 +26,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(2)
 public class ServerBootstrap implements ApplicationRunner {
-    Logger logger = LoggerFactory.getLogger(ServerBootstrap.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServerBootstrap.class);
+
+    @Value("${gateway.port}")
+    public int port;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -65,14 +69,12 @@ public class ServerBootstrap implements ApplicationRunner {
                             pipeline.addLast("serverFrameEncoder", new ServerFrameEncoder());
                             pipeline.addLast("serverProtocolDecoder", new ServerProtocolDecoder());
                             pipeline.addLast("serverProtocolEncoder", new ServerProtocolEncoder());
-
-
                         }
                     });
-            ChannelFuture channelFuture = server.bind(2020).sync();
+            ChannelFuture channelFuture = server.bind(port).sync();
             channelFuture.addListener((e) -> {
                 if (e.isSuccess()) {
-                    logger.info("gateway server starter in port {}", 2020);
+                    logger.info("gateway server starter in port {}", port);
                 }
             });
             channelFuture.channel().closeFuture().sync();
