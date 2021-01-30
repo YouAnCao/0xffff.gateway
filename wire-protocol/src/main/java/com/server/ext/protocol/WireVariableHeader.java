@@ -16,6 +16,15 @@ public class WireVariableHeader implements Serializable {
     public WireVariableHeader() {
     }
 
+    public WireVariableHeader(Integer command) {
+        this.command = command;
+    }
+
+    public WireVariableHeader(Integer command, Integer status) {
+        this.command = command;
+        this.status = status;
+    }
+
     public WireVariableHeader(Integer command, Integer status, Integer sequence) {
         this.command = command;
         this.status = status;

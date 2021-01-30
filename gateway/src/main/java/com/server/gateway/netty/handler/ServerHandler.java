@@ -28,15 +28,18 @@ public class ServerHandler extends SimpleChannelInboundHandler<WireProtocol> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        Channel                channel     = ctx.channel();
-        Attribute<Set<String>> attr        = channel.attr(AttributeKeys.SESSION_GROUPS);
-        Attribute<String>      sessionInfo = channel.attr(AttributeKeys.SESSION_ID);
+        Channel                channel   = ctx.channel();
+        Attribute<Set<String>> attr      = channel.attr(AttributeKeys.SESSION_GROUPS);
+        String                 sessionId = channel.id().asLongText();
+        /* 解绑分组信息 */
         if (attr != null) {
             Set<String> groups = attr.get();
             if (groups != null) {
-                MemorySessionGroupStore.removeMemberFromGroups(sessionInfo.get(), groups);
+                MemorySessionGroupStore.removeMemberFromGroups(sessionId, groups);
             }
         }
+        /* 解绑session 信息 */
+        MemorySessionStore.getInstance().unbindChannel(sessionId);
         super.channelInactive(ctx);
     }
 
@@ -46,10 +49,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<WireProtocol> {
         ChannelId id        = ctx.channel().id();
         String    sessionId = id.asLongText();
         MemorySessionStore.getInstance().bindChannel(sessionId, ctx.channel());
-
         super.channelActive(ctx);
     }
-
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {

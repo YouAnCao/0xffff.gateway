@@ -64,7 +64,7 @@ public class ServerBootstrap implements ApplicationRunner {
                         protected void initChannel(NioSocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline.addLast("serverLogger", new LoggingHandler(LogLevel.INFO));
-                            pipeline.addLast("idleHandler", new IdleHandler());
+                            //pipeline.addLast("idleHandler", new IdleHandler());
                             pipeline.addLast("serverFrameDecoder", new ServerFrameDecoder());
                             pipeline.addLast("serverFrameEncoder", new ServerFrameEncoder());
                             pipeline.addLast("serverProtocolDecoder", new ServerProtocolDecoder());
