@@ -1,6 +1,9 @@
 package com.server.gateway.netty.handler;
 
+import com.server.ext.protocol.ConnectFlag;
+import com.server.ext.protocol.WireFixedHeader;
 import com.server.ext.protocol.WireProtocol;
+import com.server.ext.protocol.WireVariableHeader;
 import com.server.gateway.cache.MemorySessionGroupStore;
 import com.server.gateway.cache.MemorySessionStore;
 import com.server.gateway.constant.AttributeKeys;
@@ -23,7 +26,12 @@ public class ServerHandler extends SimpleChannelInboundHandler<WireProtocol> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, WireProtocol wireProtocol) throws Exception {
-
+        byte[]             data           = new byte[5000];
+        ConnectFlag        connectFlag    = new ConnectFlag(true, false, true, false, true, 1);
+        WireFixedHeader    fixedHeader    = new WireFixedHeader(connectFlag);
+        WireVariableHeader variableHeader = new WireVariableHeader(null, 0);
+        WireProtocol       result         = new WireProtocol(fixedHeader, variableHeader, data);
+        channelHandlerContext.writeAndFlush(result);
     }
 
     @Override
