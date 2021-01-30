@@ -26,13 +26,13 @@ public class ServerTester {
         List<Client> clients = new ArrayList<>();
 
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 100; i++) {
             Client client = new Client();
             client.connect("127.0.0.1", 2025);
             clients.add(client);
         }
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 4; i++) {
             executor.execute(() -> {
                 while (true) {
                     for (Client client : clients) {
