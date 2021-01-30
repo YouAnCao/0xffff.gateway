@@ -10,13 +10,13 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.server</groupId>
+    <groupId>com.gateway</groupId>
     <artifactId>gateway-server</artifactId>
     <version>0.0.1</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>gateway</module>
+        <module>gateway-server</module>
         <module>wire-protocol</module>
         <module>gateway-client</module>
     </modules>
