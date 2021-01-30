@@ -2,9 +2,11 @@ package com.server.gateway.netty.handler;
 
 import com.server.ext.protocol.WireProtocol;
 import com.server.gateway.cache.MemorySessionGroupStore;
+import com.server.gateway.cache.MemorySessionStore;
 import com.server.gateway.constant.AttributeKeys;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelId;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.Attribute;
 import org.slf4j.Logger;
@@ -41,6 +43,19 @@ public class ServerHandler extends SimpleChannelInboundHandler<WireProtocol> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info("client connect.");
+        ChannelId id        = ctx.channel().id();
+        String    sessionId = id.asLongText();
+        MemorySessionStore.getInstance().bindChannel(sessionId, ctx.channel());
+
         super.channelActive(ctx);
     }
+
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        /* 刷新channel 的最后存活时间 */
+        MemorySessionStore.getInstance().refreshSessionActiveTime(ctx.channel().id().asLongText());
+        super.channelReadComplete(ctx);
+    }
+
 }

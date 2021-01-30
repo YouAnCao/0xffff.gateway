@@ -5,6 +5,7 @@ import com.server.gateway.netty.codec.ServerFrameEncoder;
 import com.server.gateway.netty.codec.ServerProtocolDecoder;
 import com.server.gateway.netty.codec.ServerProtocolEncoder;
 import com.server.gateway.netty.handler.IdleHandler;
+import com.server.gateway.netty.handler.ServerHandler;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -68,6 +69,7 @@ public class ServerBootstrap implements ApplicationRunner {
                             pipeline.addLast("serverFrameEncoder", new ServerFrameEncoder());
                             pipeline.addLast("serverProtocolDecoder", new ServerProtocolDecoder());
                             pipeline.addLast("serverProtocolEncoder", new ServerProtocolEncoder());
+                            pipeline.addLast("serverHandler", new ServerHandler());
                         }
                     });
             ChannelFuture channelFuture = server.bind(port).sync();

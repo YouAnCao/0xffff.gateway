@@ -18,5 +18,10 @@ public class AttributeKeys {
      * session id
      */
     public static AttributeKey<String> SESSION_ID = AttributeKey.newInstance("SESSION_ID");
+
+    /**
+     * session最后刷新时间
+     */
+    public static AttributeKey<Long> SESSION_LAST_ACTIVE_TIME = AttributeKey.newInstance("SESSION_LAST_ACTIVE_TIME");
 }
 
