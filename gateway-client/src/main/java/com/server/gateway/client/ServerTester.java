@@ -26,7 +26,7 @@ public class ServerTester {
         List<Client> clients = new ArrayList<>();
 
 
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 1000; i++) {
             Client client = new Client();
             client.connect("127.0.0.1", 2025);
             clients.add(client);

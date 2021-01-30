@@ -4,8 +4,6 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.server.gateway.constant.AttributeKeys;
 import io.netty.channel.Channel;
-import sun.security.pkcs11.wrapper.CK_SESSION_INFO;
-
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,9 +14,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 public final class MemorySessionStore {
 
-    private static final AtomicInteger CHANNEL_COUNT = new AtomicInteger();
-
-    private static final Cache<String, Channel> SESSIONS = Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES)
+    private static final AtomicInteger          CHANNEL_COUNT = new AtomicInteger();
+    private static final Cache<String, Channel> SESSIONS      = Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES)
             .maximumSize(30000).build();
 
     private MemorySessionStore() {

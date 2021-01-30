@@ -1,11 +1,9 @@
 package com.server.gateway.netty;
 
-import com.server.gateway.netty.codec.ServerFrameDecoder;
-import com.server.gateway.netty.codec.ServerFrameEncoder;
-import com.server.gateway.netty.codec.ServerProtocolDecoder;
-import com.server.gateway.netty.codec.ServerProtocolEncoder;
+import com.server.gateway.netty.codec.*;
 import com.server.gateway.netty.handler.IdleHandler;
 import com.server.gateway.netty.handler.ServerHandler;
+import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -26,8 +24,8 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Order(2)
-public class ServerBootstrap implements ApplicationRunner {
-    private static final Logger logger = LoggerFactory.getLogger(ServerBootstrap.class);
+public class GatewayBootstrap implements ApplicationRunner {
+    private static final Logger logger = LoggerFactory.getLogger(GatewayBootstrap.class);
 
     @Value("${gateway.port}")
     public int port;
@@ -38,9 +36,9 @@ public class ServerBootstrap implements ApplicationRunner {
     }
 
     private void start() {
-        NioEventLoopGroup                  bossGroup   = new NioEventLoopGroup(1);
-        NioEventLoopGroup                  workerGroup = new NioEventLoopGroup();
-        io.netty.bootstrap.ServerBootstrap server      = new io.netty.bootstrap.ServerBootstrap();
+        NioEventLoopGroup bossGroup   = new NioEventLoopGroup(1);
+        NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+        ServerBootstrap   server      = new ServerBootstrap();
 
         try {
             server.group(bossGroup, workerGroup)
@@ -69,6 +67,9 @@ public class ServerBootstrap implements ApplicationRunner {
                             pipeline.addLast("serverFrameEncoder", new ServerFrameEncoder());
                             pipeline.addLast("serverProtocolDecoder", new ServerProtocolDecoder());
                             pipeline.addLast("serverProtocolEncoder", new ServerProtocolEncoder());
+                            pipeline.addLast("dataCompressionDecoder", new ServerCompressionDecoder());
+                            pipeline.addLast("dataCompressionEncoder", new ServerCompressionEncoder());
+
                             pipeline.addLast("serverHandler", new ServerHandler());
                         }
                     });
