@@ -32,6 +32,7 @@ public class ServerCompressionEncoder extends MessageToMessageEncoder<WireProtoc
                 byte[] byteArray = out.toByteArray();
                 wireProtocol.setPayload(byteArray);
                 out.close();
+                gzip.close();
             } else {
                 wireProtocol.getFixedHeader().getConnectFlag().setCompression(false);
             }

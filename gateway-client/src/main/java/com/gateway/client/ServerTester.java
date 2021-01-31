@@ -26,13 +26,14 @@ public class ServerTester {
         List<Client> clients = new ArrayList<>();
 
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 500; i++) {
             Client client = new Client();
-            client.connect("127.0.0.1", 2025);
+            client.connect("47.119.123.173", 2025);
             clients.add(client);
+            System.out.println("connect: :" + i);
         }
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             executor.execute(() -> {
                 while (true) {
                     for (Client client : clients) {
@@ -43,7 +44,7 @@ public class ServerTester {
                         client.context.writeAndFlush(protocol);
                     }
                     try {
-                        Thread.sleep(20);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
