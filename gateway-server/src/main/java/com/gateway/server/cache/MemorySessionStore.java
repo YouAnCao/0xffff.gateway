@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class MemorySessionStore {
 
     private static final AtomicInteger          CHANNEL_COUNT = new AtomicInteger();
-    private static final Cache<String, Channel> SESSIONS      = Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES)
+    private static final Cache<String, Channel> SESSIONS      = Caffeine.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS)
             .maximumSize(30000).build();
 
     private MemorySessionStore() {
@@ -69,5 +69,14 @@ public final class MemorySessionStore {
     public void refreshSessionActiveTime(String sessionId) {
         Channel channel = SESSIONS.getIfPresent(sessionId);
         channel.attr(AttributeKeys.SESSION_LAST_ACTIVE_TIME).set(System.currentTimeMillis());
+    }
+
+    /**
+     * 获取当前连接数
+     *
+     * @return
+     */
+    public int getChannelCount() {
+        return CHANNEL_COUNT.get();
     }
 }

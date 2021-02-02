@@ -38,7 +38,6 @@ public class GatewayBootstrap implements ApplicationRunner {
         NioEventLoopGroup bossGroup   = new NioEventLoopGroup(1);
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
         ServerBootstrap   server      = new ServerBootstrap();
-
         try {
             server.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)

@@ -11,11 +11,14 @@ import java.util.concurrent.ConcurrentHashMap;
  **/
 public class MemorySessionGroupStore {
 
+    /**
+     * 防止依赖无法释放，这里使用String 类型的sessionId来映射channel
+     */
     private static final ConcurrentHashMap<String, LinkedHashSet<String>> GROUPS         = new ConcurrentHashMap<>(2000);
     private static final ConcurrentHashMap<String, Set<String>>           SESSION_GROUPS = new ConcurrentHashMap<>();
 
     /**
-     * 从多个群中移除掉sessionId
+     * 从多个分组中移除掉sessionId
      *
      * @param sessionId
      * @param groups
@@ -31,6 +34,12 @@ public class MemorySessionGroupStore {
         }
     }
 
+    /**
+     * 为sessionId 分配多个分组
+     *
+     * @param sessionId
+     * @param groups
+     */
     public void addMemberToGroups(String sessionId, String[] groups) {
         for (String group : groups) {
             LinkedHashSet<String> strings = GROUPS.get(group);
@@ -46,6 +55,12 @@ public class MemorySessionGroupStore {
         }
     }
 
+    /**
+     * 获取分组下的session
+     *
+     * @param group
+     * @return
+     */
     public LinkedHashSet<String> getMembers(String group) {
         return GROUPS.get(group);
     }
