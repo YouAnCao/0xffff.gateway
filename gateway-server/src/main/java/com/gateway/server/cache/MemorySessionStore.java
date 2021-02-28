@@ -17,6 +17,7 @@ public final class MemorySessionStore {
     private static final AtomicInteger          CHANNEL_COUNT = new AtomicInteger();
     private static final Cache<String, Channel> SESSIONS      = Caffeine.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS)
             .maximumSize(30000).build();
+    // TODO 确定此处的最大连接数，确保内存不泄露
 
     private MemorySessionStore() {
 

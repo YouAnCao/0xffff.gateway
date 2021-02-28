@@ -6,4 +6,5 @@ package com.gateway.server.consumer;
  **/
 public class GatewayMessageConsumer {
 
+
 }

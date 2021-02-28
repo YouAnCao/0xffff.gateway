@@ -5,6 +5,5 @@ spring:
     name: gateway
 
 
-
-gateway:
-  port: 2025
+  profiles:
+    active: dev

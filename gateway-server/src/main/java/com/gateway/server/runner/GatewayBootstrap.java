@@ -1,5 +1,6 @@
-package com.gateway.server.netty;
+package com.gateway.server.runner;
 
+import com.gateway.server.config.GatewayConfig;
 import com.gateway.server.netty.codec.*;
 import com.gateway.server.netty.handler.ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -11,7 +12,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -26,8 +27,8 @@ import org.springframework.stereotype.Component;
 public class GatewayBootstrap implements ApplicationRunner {
     private static final Logger logger = LoggerFactory.getLogger(GatewayBootstrap.class);
 
-    @Value("${gateway.port}")
-    public int port;
+    @Autowired
+    GatewayConfig config;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -71,10 +72,10 @@ public class GatewayBootstrap implements ApplicationRunner {
                             pipeline.addLast("serverHandler", new ServerHandler());
                         }
                     });
-            ChannelFuture channelFuture = server.bind(port).sync();
+            ChannelFuture channelFuture = server.bind(config.getPort()).sync();
             channelFuture.addListener((e) -> {
                 if (e.isSuccess()) {
-                    logger.info("gateway server starter in port {}", port);
+                    logger.info("gateway server starter in port {}", config.getPort());
                 }
             });
             channelFuture.channel().closeFuture().sync();

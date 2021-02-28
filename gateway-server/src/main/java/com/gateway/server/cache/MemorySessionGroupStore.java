@@ -14,7 +14,16 @@ public class MemorySessionGroupStore {
     /**
      * 防止依赖无法释放，这里使用String 类型的sessionId来映射channel
      */
+
+
+    /**
+     * 分组ID对应的session 集合
+     */
     private static final ConcurrentHashMap<String, LinkedHashSet<String>> GROUPS         = new ConcurrentHashMap<>(2000);
+
+    /**
+     * session 对应所有的分组
+     */
     private static final ConcurrentHashMap<String, Set<String>>           SESSION_GROUPS = new ConcurrentHashMap<>();
 
     /**
