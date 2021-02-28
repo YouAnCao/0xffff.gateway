@@ -3,12 +3,14 @@ spring:
 
 gateway:
   port: 2025
+  maxConnect: 30000
+  maxThreads: 8
   routes:
     - id: 1
-      description: LOGIN
+      description: CONNECT
       topic: im_tx_user_topic
     - id: 2
-      description: LOGOUT
+      description: DISCONNECT
       topic: im_tx_user_topic
     - id: 3
       description: PING
@@ -16,3 +18,9 @@ gateway:
     - id: 4
       descirption: PONG
       topic: im_tx_api_topic
+    - id: 5
+      description: PUSH_PRIVATE_MSG
+      topic: im_tx_private_msg_topic
+    - id: 6
+      description: PUSH_GROUP_MSG
+      topic: im_tx_group_msg_topic

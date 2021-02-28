@@ -1,5 +1,7 @@
 package com.gateway.server.cache;
 
+import com.gateway.wireprotocol.protocol.WireProtocol;
+
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -19,12 +21,12 @@ public class MemorySessionGroupStore {
     /**
      * 分组ID对应的session 集合
      */
-    private static final ConcurrentHashMap<String, LinkedHashSet<String>> GROUPS         = new ConcurrentHashMap<>(2000);
+    private static final ConcurrentHashMap<String, LinkedHashSet<String>> GROUPS = new ConcurrentHashMap<>(2000);
 
     /**
      * session 对应所有的分组
      */
-    private static final ConcurrentHashMap<String, Set<String>>           SESSION_GROUPS = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Set<String>> SESSION_GROUPS = new ConcurrentHashMap<>();
 
     /**
      * 从多个分组中移除掉sessionId
@@ -73,6 +75,5 @@ public class MemorySessionGroupStore {
     public LinkedHashSet<String> getMembers(String group) {
         return GROUPS.get(group);
     }
-
 
 }

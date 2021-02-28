@@ -15,6 +15,7 @@ public class GatewayConfig {
     protected final static String GATEWAY_ROUTER_PREFIX = "gateway";
 
     private int         port;
+    private int         node;
     private List<Route> routes;
 
     public int getPort() {
@@ -23,6 +24,14 @@ public class GatewayConfig {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public int getNode() {
+        return node;
+    }
+
+    public void setNode(int node) {
+        this.node = node;
     }
 
     public List<Route> getRoutes() {

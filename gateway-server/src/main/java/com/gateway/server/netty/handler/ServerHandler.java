@@ -56,7 +56,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<WireProtocol> {
         logger.info("client connect.");
         ChannelId id        = ctx.channel().id();
         String    sessionId = id.asLongText();
-        MemorySessionStore.getInstance().bindChannel(sessionId, ctx.channel());
+        MemorySessionStore.getInstance().bindChannel(sessionId, ctx);
         super.channelActive(ctx);
     }
 

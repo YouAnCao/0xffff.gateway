@@ -4,6 +4,7 @@ import com.gateway.server.constant.AttributeKeys;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,8 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 public final class MemorySessionStore {
 
-    private static final AtomicInteger          CHANNEL_COUNT = new AtomicInteger();
-    private static final Cache<String, Channel> SESSIONS      = Caffeine.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS)
+    private static final AtomicInteger                        CHANNEL_COUNT = new AtomicInteger();
+    private static final Cache<String, ChannelHandlerContext> SESSIONS      = Caffeine.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS)
             .maximumSize(30000).build();
     // TODO 确定此处的最大连接数，确保内存不泄露
 
@@ -35,8 +36,8 @@ public final class MemorySessionStore {
      * @param sessionId
      * @return
      */
-    public Channel getChannel(String sessionId) {
-        Channel channel = SESSIONS.getIfPresent(sessionId);
+    public ChannelHandlerContext getChannelHandlerContext(String sessionId) {
+        ChannelHandlerContext channel = SESSIONS.getIfPresent(sessionId);
         return channel;
     }
 
@@ -46,7 +47,7 @@ public final class MemorySessionStore {
      * @param sessionId
      * @param channel
      */
-    public void bindChannel(String sessionId, Channel channel) {
+    public void bindChannel(String sessionId, ChannelHandlerContext channel) {
         CHANNEL_COUNT.incrementAndGet();
         SESSIONS.put(sessionId, channel);
     }
@@ -57,7 +58,7 @@ public final class MemorySessionStore {
      * @param sessionId
      */
     public void unbindChannel(String sessionId) {
-        Channel channel = SESSIONS.getIfPresent(sessionId);
+        ChannelHandlerContext channel = SESSIONS.getIfPresent(sessionId);
         if (channel != null) {
             CHANNEL_COUNT.decrementAndGet();
         }
@@ -68,7 +69,8 @@ public final class MemorySessionStore {
      * 刷新session 的最后活动时间
      */
     public void refreshSessionActiveTime(String sessionId) {
-        Channel channel = SESSIONS.getIfPresent(sessionId);
+        ChannelHandlerContext channelHandlerContext = SESSIONS.getIfPresent(sessionId);
+        Channel               channel               = channelHandlerContext.channel();
         channel.attr(AttributeKeys.SESSION_LAST_ACTIVE_TIME).set(System.currentTimeMillis());
     }
 
