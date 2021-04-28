@@ -1,6 +1,5 @@
 package com.gateway.client;
 
-import com.gateway.wireprotocol.protocol.ConnectFlag;
 import com.gateway.wireprotocol.protocol.WireFixedHeader;
 import com.gateway.wireprotocol.protocol.WireProtocol;
 import com.gateway.wireprotocol.protocol.WireVariableHeader;

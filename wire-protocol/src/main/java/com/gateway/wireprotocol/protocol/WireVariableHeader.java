@@ -8,50 +8,35 @@ import java.io.Serializable;
  **/
 public class WireVariableHeader implements Serializable {
     static final long serialVersionUID = 55L;
+    private      long sequenceId;
+    private      int  payloadLength;
+    private      int  command;
 
-    private Integer command;
-    private Integer status;
-    private Integer sequence;
-
-    public WireVariableHeader() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public WireVariableHeader(Integer command) {
-        this.command = command;
+    public long getSequenceId() {
+        return sequenceId;
     }
 
-    public WireVariableHeader(Integer command, Integer status) {
-        this.command = command;
-        this.status = status;
+    public void setSequenceId(long sequenceId) {
+        this.sequenceId = sequenceId;
     }
 
-    public WireVariableHeader(Integer command, Integer status, Integer sequence) {
-        this.command = command;
-        this.status = status;
-        this.sequence = sequence;
+    public int getPayloadLength() {
+        return payloadLength;
     }
 
-    public Integer getCommand() {
+    public void setPayloadLength(int payloadLength) {
+        this.payloadLength = payloadLength;
+    }
+
+    public int getCommand() {
         return command;
     }
 
-    public void setCommand(Integer command) {
+    public void setCommand(int command) {
         this.command = command;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 }
